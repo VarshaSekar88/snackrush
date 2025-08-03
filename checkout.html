@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checkout - SnackRush</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>SnackRush 🧾 Checkout</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="cart.html" id="cart-link">Cart (<span id="cart-count">0</span>)</a>
+      <a href="orders.html">Orders</a>
+    </nav>
+  </header>
+
+  <main style="text-align: center; padding: 20px;">
+    <h2>Your Cart</h2>
+    <section id="cart-items" class="products">
+      <!-- Cart preview will appear here -->
+    </section>
+
+    <h2 style="margin-top: 30px;">Enter Your Details</h2>
+    <form id="checkout-form" style="max-width: 400px; margin: 20px auto; border: 2px dashed orange; padding: 20px; border-radius: 10px;">
+      <input type="text" id="name" placeholder="Full Name" required><br><br>
+      <input type="text" id="address" placeholder="Delivery Address" required><br><br>
+      <input type="tel" id="phone" placeholder="Phone Number" required><br><br>
+      <button type="submit">Place Order</button>
+    </form>
+
+    <div id="thank-you" style="display: none; margin-top: 20px;">
+      <h3>✅ Thank you for your order!</h3>
+      <p>We'll deliver your snacks soon 😊</p>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 SnackRush. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // ✅ Update cart count in navbar
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      document.getElementById("cart-count").textContent = cart.length;
+    }
+    updateCartCount();
+
+    // ✅ Render cart preview
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const container = document.getElementById("cart-items");
+
+    if (cart.length === 0) {
+      container.innerHTML = "<p style='text-align:center;'>🛒 Your cart is empty.</p>";
+    } else {
+      cart.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "product-card";
+        div.innerHTML = `
+          <img src="${item.image || 'https://via.placeholder.com/150'}" alt="${item.name}">
+          <h3>${item.name}</h3>
+          <p>Quantity: ${item.quantity}</p>
+          <p>Total: $${(item.price * item.quantity).toFixed(2)}</p>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // ✅ Handle checkout form
+    const form = document.getElementById("checkout-form");
+    const thankYou = document.getElementById("thank-you");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const address = document.getElementById("address").value;
+      const phone = document.getElementById("phone").value;
+
+      const order = {
+        id: Date.now(),
+        name,
+        address,
+        phone,
+        cart,
+        time: new Date().toLocaleString()
+      };
+
+      // ✅ Save order history
+      let orders = JSON.parse(localStorage.getItem("orders")) || [];
+      orders.push(order);
+      localStorage.setItem("orders", JSON.stringify(orders));
+
+      // ✅ Clear cart
+      localStorage.removeItem("cart");
+
+      form.style.display = "none";
+      thankYou.style.display = "block";
+      container.innerHTML = "<p>🧹 Cart cleared after order.</p>";
+      updateCartCount();
+    });
+  </script>
+
+</body>
+</html>

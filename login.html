@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - SnackRush</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>SnackRush 🔐</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+    </nav>
+  </header>
+
+  <section class="auth" style="text-align: center; margin-top: 50px;">
+    <h2>Login</h2>
+    <form onsubmit="loginUser(event)" style="max-width: 400px; margin: auto;">
+      <label>Email: <input type="email" id="login-email" required></label><br><br>
+      <label>Password: <input type="password" id="login-pass" required></label><br><br>
+      <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
+  </section>
+
+  <script>
+    function loginUser(e) {
+      e.preventDefault();
+
+      const email = document.getElementById("login-email").value;
+      const password = document.getElementById("login-pass").value;
+
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const matchedUser = users.find(u => u.email === email && u.password === password);
+
+      if (matchedUser) {
+        localStorage.setItem("loggedInUser", JSON.stringify(matchedUser));
+        alert("Login successful!");
+        window.location.href = "index.html";
+      } else {
+        alert("Invalid email or password.");
+      }
+    }
+  </script>
+</body>
+</html>
