@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu - SnackRush</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>SnackRush 🍭</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+  </header>
+  <section class="products">
+    <h2 style="text-align: center;">Our Snack Menu</h2>
+    <div class="product-list">
+      <div class="product">
+        <img src="images/chips.jpg" alt="Crunchy Chips">
+        <h3>Crunchy Chips</h3>
+        <p>$2.99</p>
+        <button onclick="addToCart('Crunchy Chips', 2.99, 'images/chips.jpg')">Add to Cart</button>
+      </div>
+      <div class="product">
+        <img src="images/cookies.jpeg" alt="Chocolate Cookies">
+        <h3>Chocolate Cookies</h3>
+        <p>$3.49</p>
+        <button onclick="addToCart('Chocolate Cookies', 3.49, 'images/cookies.jpeg')">Add to Cart</button>
+      </div>
+      <div class="product">
+        <img src="images/cola.jpg" alt="Cola Drink">
+        <h3>Cola Drink</h3>
+        <p>$1.99</p>
+        <button onclick="addToCart('Cola Drink', 1.99, 'images/cola.jpg')">Add to Cart</button>
+      </div>
+      <div class="product">
+        <img src="images/candy.jpeg" alt="Cotton Candy">
+        <h3>Cotton Candy</h3>
+        <p>$5.49</p>
+        <button onclick="addToCart('Cotton Candy', 5.49, 'images/candy.jpeg')">Add to Cart</button>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <p>Explore more treats at SnackRush! 🍪</p>
+  </footer>
+  <script src="script.js"></script>
+  <script>
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      document.getElementById("cart-count").textContent = cart.length;
+    }
+    function addToCart(product, price, image) {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.push({ product, price, image });
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartCount();
+      alert(`${product} added to cart!`);
+    }
+    updateCartCount();
+  </script>
+</body>
+</html>

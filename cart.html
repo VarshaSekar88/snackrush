@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Cart - SnackRush</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>SnackRush 🛒 Your Cart</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="checkout.html">Checkout</a>
+      <a href="orders.html">Orders</a>
+    </nav>
+  </header>
+  <main>
+  <h2 style="text-align:center;">Cart Items</h2>
+  <section id="cart-items" class="products">
+   
+  </section>
+  <div id="cart-total" style="text-align: center; font-size: 18px; margin: 20px;">
+    Total: $0.00
+  </div>
+  <div style="text-align: center; margin: 20px;">
+    <button id="clear-cart">Clear Cart</button>
+  </div>
+</main>
+<script>
+  const cartSection = document.getElementById("cart-items");
+  const clearBtn = document.getElementById("clear-cart");
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  function displayCart() {
+    cartSection.innerHTML = "";
+    if (cart.length === 0) {
+      cartSection.innerHTML = "<p>Your cart is empty.</p>";
+      clearBtn.style.display = "none";
+      document.getElementById("cart-total").innerText = "Total: ₹0.00";
+      return;
+    }
+
+    clearBtn.style.display = "inline-block";
+    let total = 0;
+
+    cart.forEach((item, index) => {
+      const name = item.name || "Unnamed Snack";
+      const image = item.image || "https://via.placeholder.com/150";
+      const quantity = parseInt(item.quantity) || 1;
+      const price = typeof item.price === "number"
+        ? item.price
+        : parseFloat((item.price + "").replace(/[^0-9.]/g, '')) || 0;
+
+      total += price * quantity;
+
+      const itemDiv = document.createElement("div");
+      itemDiv.className = "product-card";
+      itemDiv.innerHTML = `
+        <img src="${image}" alt="${name}">
+        <h2>${name}</h2>
+        <p>Price: ₹${price.toFixed(2)}</p>
+        <p>Quantity: ${quantity}</p>
+        <div>
+          <button onclick="decreaseQuantity(${index})">-</button>
+          <button onclick="increaseQuantity(${index})">+</button>
+          <button onclick="removeItem(${index})">Remove</button>
+        </div>
+      `;
+      cartSection.appendChild(itemDiv);
+    });
+
+    document.getElementById("cart-total").innerText = `Total: ₹${total.toFixed(2)}`;
+  }
+
+  function removeItem(index) {
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    displayCart();
+  }
+
+  function increaseQuantity(index) {
+    if (!cart[index].quantity) cart[index].quantity = 1;
+    cart[index].quantity += 1;
+    localStorage.setItem("cart", JSON.stringify(cart));
+    displayCart();
+  }
+
+  function decreaseQuantity(index) {
+    if (cart[index].quantity > 1) {
+      cart[index].quantity -= 1;
+    } else {
+      cart.splice(index, 1);
+    }
+    localStorage.setItem("cart", JSON.stringify(cart));
+    displayCart();
+  }
+
+  clearBtn.addEventListener("click", () => {
+    localStorage.removeItem("cart");
+    cart = [];
+    displayCart();
+  });
+
+  displayCart();
+</script>
+
+</body>
+</html>
