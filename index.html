@@ -1,0 +1,115 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SnackRush - Home</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>SnackRush 🍿</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="cart.html">Cart</a>
+      <a href="#contact">Contact</a>
+      <button onclick="logout()">Logout</button>
+    </nav>
+  </header>
+
+   🏠Welcome 
+  <section class="hero">
+    <h2>Welcome to SnackRush!</h2>
+    <p>Order your favorite snacks online, fresh and fast.</p>
+    <a href="menu.html" class="btn">Explore Menu</a>
+  </section>
+  <!-- ⭐ Featured Products -->
+  <section class="products">
+  <h2>Featured Snacks</h2>
+  <div class="product-list">
+    
+    <div class="product-card">
+
+      <img src="images/chips.jpg" alt="Chips">
+      <h3>Crunchy Chips</h3>
+      <p>₹2.99</p>
+      <button 
+        data-product="Crunchy Chips" 
+        data-price="2.99" 
+        data-image="images/chips.jpg">
+        Add to Cart
+      </button>
+    </div>
+
+    <div class="product-card">
+      <img src="images/cookies.jpeg" alt="Cookies">
+      <h3>Chocolate Cookies</h3>
+      <p>₹3.49</p>
+      <button 
+        data-product="Chocolate Cookies" 
+        data-price="3.49" 
+        data-image="images/cookies.jpeg">
+        Add to Cart
+      </button>
+    </div>
+
+    <div class="product-card">
+      <img src="images/cola.jpg" alt="Cola">
+      <h3>Cola Drink</h3>
+      <p>₹1.99</p>
+      <button 
+        data-product="Cola Drink" 
+        data-price="1.99" 
+        data-image="images/cola.jpg">
+        Add to Cart
+      </button>
+    </div>
+
+    <div class="product-card">
+      <img src="images/candy.jpeg" alt="Cotton Candy">
+      <h3>Cotton Candy</h3>
+      <p>₹5.49</p>
+      <button 
+        data-product="Cotton Candy" 
+        data-price="5.49" 
+        data-image="images/candy.jpeg">
+        Add to Cart
+      </button>
+    </div>
+
+  </div>
+  <a href="menu.html" class="btn">See Full Menu</a>
+</section>
+
+
+  <!-- 📞 Contact Section -->
+  <footer id="contact">
+    <h3>Contact Us</h3>
+    <p>Email: varshaprethi2004@gmail.com</p>
+    <p>Phone: +91 8870325188</p>
+    <p>&copy; 2025 SnackRush. All rights reserved.</p>
+  </footer>
+  <script>
+    function logout() {
+      localStorage.removeItem("loggedInUser");
+      alert("Logged out!");
+      window.location.href = "index.html";
+    }
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      document.getElementById("cart-count").textContent = cart.length;
+    }
+    function addToCart(product, price, image) {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.push({ product, price, image });
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartCount();
+      alert(`${product} added to cart!`);
+    }
+    updateCartCount();
+  </script>
+
+</body>
+</html>
